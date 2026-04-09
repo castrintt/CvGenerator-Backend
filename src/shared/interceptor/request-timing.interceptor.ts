@@ -10,8 +10,7 @@ import { finalize } from 'rxjs/operators';
 @Injectable()
 export class RequestTimingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
-    const http = context.switchToHttp();
-    const request = http.getRequest<{ method: string; url: string }>();
+    const request = context.switchToHttp().getRequest();
     const startedAt = Date.now();
     const entryIso = new Date().toISOString();
 
