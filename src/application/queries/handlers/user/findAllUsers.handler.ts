@@ -1,21 +1,27 @@
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { UserRepositorySymbol } from 'src/IoC/symbols/user.symbol';
 import { FindAllResponse } from 'src/application/dataTransferObjects/response/user/findAll.response';
-import { type IUserRepository } from 'src/domain/interfaces/IUserRepository';
+import { UserMapper } from 'src/application/mapper/user/user.mapper';
+import { UserRepository, UserRepositorySymbol } from 'src/infrastructure/repository/user.repository';
+import { Repository } from 'typeorm';
 import { FindAllUsersQuery } from '../../user/findAll.query';
 
+@Injectable()
 @QueryHandler(FindAllUsersQuery)
 export class FindAllUsersHandler implements IQueryHandler<FindAllUsersQuery> {
 
     constructor(
         @Inject(UserRepositorySymbol)
-        private readonly userRepository: IUserRepository,
+        private readonly _user_repository: Repository<UserRepository>,
     ) { }
 
 
     async execute(query: FindAllUsersQuery): Promise<FindAllResponse> {
-        console.log('query received', query);
-        return {} as FindAllResponse
+        const found = await this._user_repository.find({
+            skip: (query.page - 1) * query.limit,
+            take: query.limit,
+        });
+        const response = new FindAllResponse(query.page, query.limit, found.map(user => UserMapper.fromDomainToResponse(user)));
+        return response
     }
 }

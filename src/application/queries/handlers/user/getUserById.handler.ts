@@ -1,22 +1,24 @@
+import { Inject, Injectable } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 import { GetByIdResponse } from "src/application/dataTransferObjects/response/user/getById.response";
 import { UserMapper } from "src/application/mapper/user/user.mapper";
-import { UserEntity } from "src/domain/entities/user.entity";
+import { UserRepository, UserRepositorySymbol } from "src/infrastructure/repository/user.repository";
+import { EntityNotFoundError, Repository } from "typeorm";
 import { GetUserByIdQuery } from "../../user/getById.query";
 
 
+@Injectable()
 @QueryHandler(GetUserByIdQuery)
 export class GetUserByIdHandler implements IQueryHandler<GetUserByIdQuery> {
+    constructor(
+        @Inject(UserRepositorySymbol)
+        private readonly _user_repository: Repository<UserRepository>,
+    ) { }
+
+
     async execute(query: GetUserByIdQuery): Promise<GetByIdResponse> {
-        console.log('query received', query);
-        const user = new UserEntity(
-            'random id',
-            'igor',
-            'igordc38@gmail.com',
-            '123456',
-            new Date(),
-            new Date()
-        )
+        const user = await this._user_repository.findOne({ where: { id: query.userId } });
+        if (!user) throw new EntityNotFoundError(UserRepository, query.userId);;
         return UserMapper.fromDomainToResponse(user);
     }
 }

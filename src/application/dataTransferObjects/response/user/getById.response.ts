@@ -1,6 +1,6 @@
 export class GetByIdResponse {
     constructor(
-        public readonly userId: string,
+        public readonly id: string,
         public readonly name: string,
         public readonly email: string,
         public readonly createdAt: Date,

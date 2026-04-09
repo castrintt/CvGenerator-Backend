@@ -5,11 +5,11 @@ import { CreateUserHandler } from "src/application/commands/handlers/user/create
 import { DeleteUserHandler } from "src/application/commands/handlers/user/deleteUser.handler";
 import { FindAllUsersHandler } from "src/application/queries/handlers/user/findAllUsers.handler";
 import { GetUserByIdHandler } from "src/application/queries/handlers/user/getUserById.handler";
-import { UserRepository } from "src/infrastructure/repository/user.repository";
-import { UserRepositorySymbol } from "../symbols/user.symbol";
+import { DatabaseModule } from "src/infrastructure/db/database.module";
+import { userProviders } from "src/infrastructure/repository/user.repository";
 
 @Module({
-    imports: [CqrsModule],
+    imports: [CqrsModule, DatabaseModule],
     controllers: [UserController],
     providers: [
         //commands
@@ -21,10 +21,7 @@ import { UserRepositorySymbol } from "../symbols/user.symbol";
         GetUserByIdHandler,
 
         //repository
-        {
-            provide: UserRepositorySymbol,
-            useClass: UserRepository,
-        }
+        ...userProviders,
     ],
 })
 export class UserContainerModule { }

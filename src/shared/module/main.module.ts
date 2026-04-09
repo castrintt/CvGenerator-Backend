@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { UserContainerModule } from 'src/IoC/containers/user.container';
+import { UserContainerModule } from 'src/IoC/user.container';
 
 
 @Module({

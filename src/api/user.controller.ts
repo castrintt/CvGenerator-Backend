@@ -7,7 +7,8 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
-  Query
+  Query,
+  UseInterceptors
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateUserCommand, DeleteUserCommand } from 'src/application/commands/user/user.command';
@@ -16,6 +17,7 @@ import { FindAllResponse } from 'src/application/dataTransferObjects/response/us
 import { GetByIdResponse } from 'src/application/dataTransferObjects/response/user/getById.response';
 import { FindAllUsersQuery } from 'src/application/queries/user/findAll.query';
 import { GetUserByIdQuery } from 'src/application/queries/user/getById.query';
+import { EmailAlreadyExistInterceptor } from 'src/shared/interceptor/email-already-exist.interceptor';
 
 @Injectable()
 @Controller('users')
@@ -26,19 +28,15 @@ export class UserController {
   ) { }
 
   @Post('create')
+  @UseInterceptors(EmailAlreadyExistInterceptor)
   async createUser(@Body() request: CreateRequest): Promise<void> {
-    const command = new CreateUserCommand(
-      request.userId,
-      request.name,
-      request.email,
-      request.password,
-    );
+    const command = new CreateUserCommand(request.name, request.email, request.password);
     return this.commandBus.execute<CreateUserCommand>(command);
   }
 
-  @Delete(':userId')
-  async deleteUser(@Param('userId', ParseUUIDPipe) userId: string): Promise<void> {
-    const command = new DeleteUserCommand(userId);
+  @Delete(':id')
+  async deleteUser(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
+    const command = new DeleteUserCommand(id);
     return this.commandBus.execute<DeleteUserCommand>(command);
   }
 
@@ -50,9 +48,9 @@ export class UserController {
   }
 
 
-  @Get(':userId')
-  async getUserById(@Param('userId', ParseUUIDPipe) userId: string): Promise<GetByIdResponse> {
-    const query = new GetUserByIdQuery(userId);
+  @Get(':id')
+  async getUserById(@Param('id', ParseUUIDPipe) id: string): Promise<GetByIdResponse> {
+    const query = new GetUserByIdQuery(id);
     return this.queryBus.execute<GetUserByIdQuery, GetByIdResponse>(query);
   }
 }

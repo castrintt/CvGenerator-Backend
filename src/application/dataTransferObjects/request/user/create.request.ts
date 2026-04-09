@@ -1,9 +1,6 @@
-import { IsEmail, IsString, IsUUID } from "class-validator"
+import { IsEmail, IsString } from "class-validator"
 
 export class CreateRequest {
-    @IsString()
-    @IsUUID(4)
-    public readonly userId: string
     @IsString()
     public readonly name: string
     @IsEmail()
