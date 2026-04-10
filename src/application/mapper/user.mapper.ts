@@ -2,7 +2,7 @@ import { GetByIdResponse } from "src/application/dataTransferObjects/response/us
 import { UserEntity } from "src/domain/entities/user.entity";
 
 export class UserMapper {
-    
+
     public static fromDomainToResponse(user: UserEntity): GetByIdResponse {
         return new GetByIdResponse(
             user.id,

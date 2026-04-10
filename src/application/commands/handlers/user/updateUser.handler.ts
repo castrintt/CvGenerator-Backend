@@ -2,7 +2,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { UserRepository, UserRepositorySymbol } from "src/infrastructure/repository/user.repository";
 import { EntityNotFoundError, Repository } from "typeorm";
-import { UpdateUserCommand } from "../../user/user.command";
+import { UpdateUserCommand } from "../../user.command";
 
 
 @Injectable()

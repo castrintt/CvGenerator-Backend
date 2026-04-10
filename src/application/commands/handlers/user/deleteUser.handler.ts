@@ -2,7 +2,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { UserRepository, UserRepositorySymbol } from "src/infrastructure/repository/user.repository";
 import { Repository } from "typeorm";
-import { DeleteUserCommand } from "../../user/user.command";
+import { DeleteUserCommand } from "../../user.command";
 
 @Injectable()
 @CommandHandler(DeleteUserCommand)

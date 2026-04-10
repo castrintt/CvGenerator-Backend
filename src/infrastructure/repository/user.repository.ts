@@ -1,5 +1,6 @@
 
-import { Column, DataSource, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, DataSource, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { CategoryRepository } from './category.repository';
 
 @Entity('users')
 export class UserRepository {
@@ -20,6 +21,9 @@ export class UserRepository {
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
     updatedAt: Date;
+
+    @OneToMany(() => CategoryRepository, (category) => category.user)
+    categories: CategoryRepository[]
 }
 
 export const UserRepositorySymbol = Symbol('UserRepository');

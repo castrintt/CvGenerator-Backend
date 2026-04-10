@@ -6,7 +6,6 @@ import { DeleteUserHandler } from "src/application/commands/handlers/user/delete
 import { SendUserResetPasswordEmailHandler } from "src/application/commands/handlers/user/sendUserResetPasswordEmail.handler";
 import { UpdateUserHandler } from "src/application/commands/handlers/user/updateUser.handler";
 import { UpdateUserPasswordHandler } from "src/application/commands/handlers/user/updateUserPassword.handler";
-import { FindAllUsersHandler } from "src/application/queries/handlers/user/findAllUsers.handler";
 import { GetUserByIdHandler } from "src/application/queries/handlers/user/getUserById.handler";
 import { DatabaseModule } from "src/infrastructure/db/database.module";
 import { userProviders } from "src/infrastructure/repository/user.repository";
@@ -23,7 +22,6 @@ import { userProviders } from "src/infrastructure/repository/user.repository";
         SendUserResetPasswordEmailHandler,
 
         //queries
-        FindAllUsersHandler,
         GetUserByIdHandler,
 
         //repository

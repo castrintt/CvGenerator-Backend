@@ -3,7 +3,7 @@ import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { UserRepository, UserRepositorySymbol } from "src/infrastructure/repository/user.repository";
 import { PasswordToHash } from "src/shared/utils/passwordToHash";
 import { EntityNotFoundError, Repository } from "typeorm";
-import { UpdateUserPasswordCommand } from "../../user/user.command";
+import { UpdateUserPasswordCommand } from "../../user.command";
 
 
 @Injectable()
