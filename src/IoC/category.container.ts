@@ -7,6 +7,7 @@ import { UpdateCategoryHandler } from "src/application/commands/handlers/categor
 import { FindAllCategoriesHandler } from "src/application/queries/handlers/category/findAllCategorys.handler";
 import { DatabaseModule } from "src/infrastructure/db/database.module";
 import { categoryProviders } from "src/infrastructure/repository/category.repository";
+import { userProviders } from "src/infrastructure/repository/user.repository";
 
 @Module({
     imports: [CqrsModule, DatabaseModule],
@@ -22,6 +23,7 @@ import { categoryProviders } from "src/infrastructure/repository/category.reposi
 
         //repository
         ...categoryProviders,
+        ...userProviders,
     ],
 })
 export class CategoryContainerModule { }

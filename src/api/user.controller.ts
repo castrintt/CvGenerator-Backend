@@ -17,7 +17,7 @@ import { CreateRequest } from 'src/application/dataTransferObjects/request/user/
 import { UpdateUserRequest } from 'src/application/dataTransferObjects/request/user/update.request';
 import { UpdateUserPasswordRequest } from 'src/application/dataTransferObjects/request/user/updatePassword.request';
 import { GetByIdResponse } from 'src/application/dataTransferObjects/response/user/getById.response';
-import { GetUserByIdQuery } from 'src/application/queries/getById.query';
+import { GetUserByIdQuery } from 'src/application/queries/user.query';
 import { EmailAlreadyExistInterceptor } from 'src/shared/interceptor/email-already-exist.interceptor';
 
 @Injectable()
