@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { type IUserRepository } from "src/domain/interfaces/IUserRepository";
-import { UserRepositorySymbol } from "src/IoC/symbols/user.symbols";
+import { UserRepositorySymbol } from "src/IoC/symbols/symbols";
 import { UpdateUserCommand } from "../../user.command";
 
 

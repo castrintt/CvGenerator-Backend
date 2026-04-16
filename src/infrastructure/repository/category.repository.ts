@@ -1,7 +1,8 @@
 import { Inject, Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
 import { CategoryEntity } from "src/domain/entities/category.entity";
 import { ICategoryRepository } from "src/domain/interfaces/ICategoryRepository";
-import { CategoryRepositorySymbol } from "src/IoC/symbols/category.symbols";
+import { CategoryRepositorySymbol } from "src/IoC/symbols/symbols";
 import { Repository } from "typeorm";
 
 
@@ -9,7 +10,7 @@ import { Repository } from "typeorm";
 export class CategoryRepository implements ICategoryRepository {
 
     constructor(
-        @Inject(CategoryRepositorySymbol)
+        @InjectRepository(CategoryEntity)
         private readonly _category_repository: Repository<CategoryEntity>,
     ) { }
 

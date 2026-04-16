@@ -10,7 +10,7 @@ import { UpdateUserPasswordHandler } from "src/application/commands/handlers/use
 import { GetUserByIdHandler } from "src/application/queries/handlers/user/getUserById.handler";
 import { UserEntity } from 'src/domain/entities/user.entity';
 import { UserRepository } from "src/infrastructure/repository/user.repository";
-import { UserRepositorySymbol } from "../symbols/user.symbols";
+import { UserRepositorySymbol } from "../symbols/symbols";
 
 @Module({
     imports: [

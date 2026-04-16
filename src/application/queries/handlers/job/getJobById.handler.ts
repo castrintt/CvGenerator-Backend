@@ -2,7 +2,7 @@ import { Inject } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 import { GetJobByIdResponse } from "src/application/dataTransferObjects/response/job/getById.response";
 import { type IJobRepository } from "src/domain/interfaces/IJobRepository";
-import { JobRepositorySymbol } from "src/IoC/symbols/job.symbols";
+import { JobRepositorySymbol } from "src/IoC/symbols/symbols";
 import { GetJobByIdQuery } from "../../job.query";
 
 @QueryHandler(GetJobByIdQuery)

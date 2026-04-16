@@ -1,6 +1,6 @@
 import { Inject } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
-import { CategoryRepositorySymbol } from "src/IoC/symbols/category.symbols";
+import { CategoryRepositorySymbol } from "src/IoC/symbols/symbols";
 import { FindAllCategoriesResponse } from "src/application/dataTransferObjects/response/category/findAll.response";
 import { type ICategoryRepository } from "src/domain/interfaces/ICategoryRepository";
 import { FindAllCategoriesQuery } from "../../category.query";

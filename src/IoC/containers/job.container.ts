@@ -9,7 +9,7 @@ import { UpdateJobHandler } from "src/application/commands/handlers/jobs/updateJ
 import { GetJobByIdHandler } from "src/application/queries/handlers/job/getJobById.handler";
 import { JobEntity } from "src/domain/entities/job.entity";
 import { JobRepository } from "src/infrastructure/repository/job.repository";
-import { JobRepositorySymbol } from "../symbols/job.symbols";
+import { JobRepositorySymbol } from "../symbols/symbols";
 
 @Module({
     imports: [

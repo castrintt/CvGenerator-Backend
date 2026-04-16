@@ -1,27 +1,22 @@
 import {
-  BadRequestException,
   CallHandler,
   ExecutionContext,
   Inject,
   Injectable,
-  NestInterceptor,
+  NestInterceptor
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { UserRepository, UserRepositorySymbol } from 'src/infrastructure/repository/user.repository';
-import { Repository } from 'typeorm';
+import { type IUserRepository } from 'src/domain/interfaces/IUserRepository';
+import { UserRepositorySymbol } from 'src/IoC/symbols/symbols';
 
 @Injectable()
 export class EmailAlreadyExistInterceptor implements NestInterceptor {
   constructor(
     @Inject(UserRepositorySymbol)
-    private readonly _user_repository: Repository<UserRepository>,
+    private readonly _user_repository: IUserRepository,
   ) { }
 
   async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
-    const request = context.switchToHttp().getRequest();
-    const email = request.body.email;
-    const user = await this._user_repository.findOne({ where: { email } });
-    if (user) throw new BadRequestException('Email already exists');
     return next.handle();
   }
 }

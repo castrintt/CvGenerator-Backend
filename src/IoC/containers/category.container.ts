@@ -8,7 +8,7 @@ import { UpdateCategoryHandler } from "src/application/commands/handlers/categor
 import { FindAllCategoriesHandler } from "src/application/queries/handlers/category/findAllCategorys.handler";
 import { CategoryEntity } from "src/domain/entities/category.entity";
 import { CategoryRepository } from "src/infrastructure/repository/category.repository";
-import { CategoryRepositorySymbol } from "../symbols/category.symbols";
+import { CategoryRepositorySymbol } from "../symbols/symbols";
 import { UserContainerModule } from "./user.container";
 
 @Module({

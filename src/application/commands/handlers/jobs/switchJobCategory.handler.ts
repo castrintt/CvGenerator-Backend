@@ -1,7 +1,7 @@
 import { Inject } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { type IJobRepository } from "src/domain/interfaces/IJobRepository";
-import { JobRepositorySymbol } from "src/IoC/symbols/job.symbols";
+import { JobRepositorySymbol } from "src/IoC/symbols/symbols";
 import { SwitchJobCategoryCommand } from "../../job.commands";
 
 @CommandHandler(SwitchJobCategoryCommand)

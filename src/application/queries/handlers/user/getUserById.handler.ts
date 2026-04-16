@@ -2,7 +2,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 import { GetByIdResponse } from "src/application/dataTransferObjects/response/user/getById.response";
 import { type IUserRepository } from "src/domain/interfaces/IUserRepository";
-import { UserRepositorySymbol } from "src/IoC/symbols/user.symbols";
+import { UserRepositorySymbol } from "src/IoC/symbols/symbols";
 import { GetUserByIdQuery } from "../../user.query";
 
 
