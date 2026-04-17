@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CONFIG_DB } from 'src/infrastructure/db/config.db';
+import { createTypeOrmConfig } from 'src/infrastructure/db/config.db';
 import { AuthModule } from 'src/modules/containers/auth.module';
 import { CategoryContainerModule } from 'src/modules/containers/category.container';
 import { JobsContainerModule } from 'src/modules/containers/job.container';
@@ -13,8 +14,16 @@ import { JwtAuthGuard } from './guard/jwtAuth.guard';
 
 @Module({
     imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+            envFilePath: ['.env', '.env.local'],
+        }),
         CqrsModule.forRoot(),
-        TypeOrmModule.forRoot(CONFIG_DB),
+        TypeOrmModule.forRootAsync({
+            inject: [ConfigService],
+            useFactory: (configService: ConfigService) =>
+                createTypeOrmConfig(configService),
+        }),
         ThrottlerModule.forRoot(RATE_LIMIT_OPTIONS),
         UserContainerModule,
         JobsContainerModule,
