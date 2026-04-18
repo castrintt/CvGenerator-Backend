@@ -6,6 +6,7 @@ import { SignInAuthResult } from "src/application/dto/response/user/signInAuth.r
 import { UserMapper } from "src/application/mapper/user.mapper";
 import { type IUserRepository } from "src/domain/interfaces/IUserRepository";
 import { UserRepositorySymbol } from "src/modules/symbols/symbols";
+import { normalizeEmail } from "src/shared/utils/normalize-email";
 import { SignInAuthCommand } from "../../auth.command";
 
 @CommandHandler(SignInAuthCommand)
@@ -18,7 +19,7 @@ export class SignInAuthHandler implements ICommandHandler<SignInAuthCommand> {
 
     async execute(command: SignInAuthCommand): Promise<SignInAuthResult> {
         const userEntity = await this._user_repository
-            .findUserEntityByEmail(command.email);
+            .findUserEntityByEmail(normalizeEmail(command.email));
         if (!userEntity) throw new NotFoundException('User not found with this email: ' + command.email);
 
         const passwordMatches = await bcrypt
