@@ -11,6 +11,7 @@ import { GetUserByIdHandler } from "src/application/queries/handlers/user/getUse
 import { UserEntity } from 'src/domain/entities/user.entity';
 import { UserRepository } from "src/infrastructure/repository/user.repository";
 import { UserRepositorySymbol } from "../symbols/symbols";
+import { EmailAlreadyExistsGuard } from "src/shared/guard/email-already-exists.guard";
 
 @Module({
     imports: [
@@ -19,6 +20,7 @@ import { UserRepositorySymbol } from "../symbols/symbols";
     ],
     controllers: [UserController],
     providers: [
+        EmailAlreadyExistsGuard,
         //commands
         CreateUserHandler,
         DeleteUserHandler,

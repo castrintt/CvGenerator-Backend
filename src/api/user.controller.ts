@@ -9,7 +9,7 @@ import {
   Post,
   Put,
   Query,
-  UseInterceptors
+  UseGuards,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateUserCommand, DeleteUserCommand, SendUserResetPasswordEmailCommand, UpdateUserCommand, UpdateUserPasswordCommand } from 'src/application/commands/user.command';
@@ -18,8 +18,9 @@ import { UpdateUserRequest } from 'src/application/dto/request/user/update.reque
 import { UpdateUserPasswordRequest } from 'src/application/dto/request/user/updatePassword.request';
 import { GetByIdResponse } from 'src/application/dto/response/user/getById.response';
 import { GetUserByIdQuery } from 'src/application/queries/user.query';
+import { EmailUnique } from 'src/shared/decorator/email-unique.decorator';
 import { Public } from 'src/shared/decorator/public.decorator';
-import { EmailAlreadyExistInterceptor } from 'src/shared/interceptor/email-already-exist.interceptor';
+import { EmailAlreadyExistsGuard } from 'src/shared/guard/email-already-exists.guard';
 
 @Injectable()
 @Controller('users')
@@ -37,7 +38,8 @@ export class UserController {
 
   @Post('create')
   @Public()
-  @UseInterceptors(EmailAlreadyExistInterceptor)
+  @EmailUnique('create')
+  @UseGuards(EmailAlreadyExistsGuard)
   async createUser(@Body() request: CreateRequest): Promise<void> {
     const command = new CreateUserCommand(request.name, request.email, request.password);
     return this._command_bus.execute<CreateUserCommand>(command);
@@ -50,7 +52,8 @@ export class UserController {
   }
 
   @Put('update')
-  @UseInterceptors(EmailAlreadyExistInterceptor)
+  @EmailUnique('update')
+  @UseGuards(EmailAlreadyExistsGuard)
   async updateUser(@Query('id', ParseUUIDPipe) id: string, @Body() request: UpdateUserRequest): Promise<void> {
     const command = new UpdateUserCommand(id, request.name, request.email);
     return this._command_bus.execute<UpdateUserCommand>(command);
