@@ -33,3 +33,10 @@ export const AUTH_REFRESH_THROTTLE = {
   medium: { limit: 15, ttl: 60_000 },
   long: { limit: 60, ttl: 3_600_000 },
 };
+
+/** PUT /users/update_password — reduz brute force na verificação de senha atual. */
+export const USER_CHANGE_PASSWORD_THROTTLE = {
+  short: { limit: 2, ttl: 10_000 },
+  medium: { limit: 5, ttl: 60_000 },
+  long: { limit: 15, ttl: 3_600_000 },
+};

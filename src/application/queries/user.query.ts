@@ -1,8 +1,5 @@
-export class GetUserByIdQuery {
-  constructor(
-    public readonly userId: string,
-    public readonly requestingUserId: string,
-  ) {}
+export class GetCurrentUserQuery {
+  constructor(public readonly authenticatedUserId: string) {}
 }
 
 export class FindUserByEmailQuery {

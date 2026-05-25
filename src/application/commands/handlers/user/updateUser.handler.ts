@@ -14,10 +14,9 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
   ) {}
 
   async execute(command: UpdateUserCommand): Promise<boolean> {
-    if (command.requestingUserId !== command.id) {
-      throw new NotFoundException();
-    }
-    const user = await this._user_repository.findUserEntityById(command.id);
+    const user = await this._user_repository.findUserEntityById(
+      command.authenticatedUserId,
+    );
     if (!user) {
       throw new NotFoundException();
     }

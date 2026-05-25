@@ -12,6 +12,8 @@ export const ApiErrorMessages = {
   user: {
     notFoundForEmail: 'Nenhum usuário encontrado para o e-mail informado.',
     notFound: 'Usuário não encontrado.',
+    invalidCurrentPassword: 'Senha atual incorreta.',
+    newPasswordSameAsCurrent: 'A nova senha deve ser diferente da senha atual.',
   },
   category: {
     notFound: 'Categoria não encontrada.',

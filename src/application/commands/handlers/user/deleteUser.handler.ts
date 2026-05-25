@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UserRepositorySymbol } from 'src/modules/symbols/symbols';
 import { type IUserRepository } from 'src/domain/interfaces/IUserRepository';
@@ -13,9 +13,6 @@ export class DeleteUserHandler implements ICommandHandler<DeleteUserCommand> {
   ) {}
 
   async execute(command: DeleteUserCommand): Promise<boolean> {
-    if (command.requestingUserId !== command.id) {
-      throw new NotFoundException();
-    }
-    return this._user_repository.delete(command.id);
+    return this._user_repository.delete(command.authenticatedUserId);
   }
 }

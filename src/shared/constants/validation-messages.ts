@@ -2,11 +2,13 @@
 export const ValidationMessages = {
   emailInvalid: 'Informe um e-mail válido.',
   passwordRequired: 'A senha é obrigatória.',
+  currentPasswordRequired: 'A senha atual é obrigatória.',
+  newPasswordRequired: 'A nova senha é obrigatória.',
   passwordMinLength: 'A senha deve ter pelo menos 8 caracteres.',
   passwordMaxLength: 'A senha deve ter no máximo 20 caracteres.',
   nameMustBeText: 'O nome deve ser um texto válido.',
+  userNameMaxLength: 'O nome deve ter no máximo 150 caracteres.',
   passwordMustBeText: 'A senha deve ser um texto válido.',
-  userIdMustBeUuid: 'O identificador do usuário deve ser um UUID válido.',
   categoryIdMustBeUuid: 'O identificador da categoria deve ser um UUID válido.',
   categoryNameMustBeText: 'O nome da categoria deve ser um texto válido.',
   categoryNameMaxLength:

@@ -1,7 +1,5 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UserRepositorySymbol } from 'src/modules/symbols/symbols';
-import { type IUserRepository } from 'src/domain/interfaces/IUserRepository';
 import { SendUserResetPasswordEmailCommand } from '../../user.command';
 
 @Injectable()
@@ -9,15 +7,7 @@ import { SendUserResetPasswordEmailCommand } from '../../user.command';
 export class SendUserResetPasswordEmailHandler
   implements ICommandHandler<SendUserResetPasswordEmailCommand>
 {
-  constructor(
-    @Inject(UserRepositorySymbol)
-    private readonly _user_repository: IUserRepository,
-  ) {}
-
-  async execute(command: SendUserResetPasswordEmailCommand): Promise<void> {
-    if (command.requestingUserId !== command.id) {
-      throw new NotFoundException();
-    }
+  async execute(_command: SendUserResetPasswordEmailCommand): Promise<void> {
     // TODO: implementar envio de e-mail com link de redefinição de senha
   }
 }

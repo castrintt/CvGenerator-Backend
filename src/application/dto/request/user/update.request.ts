@@ -1,11 +1,9 @@
-import { IsEmail, IsString, IsUUID } from 'class-validator';
+import { IsEmail, IsString, MaxLength } from 'class-validator';
 import { ValidationMessages } from 'src/shared/constants/validation-messages';
 
 export class UpdateUserRequest {
-  @IsUUID('4', { message: ValidationMessages.entityIdMustBeUuid })
-  public readonly id: string;
-
   @IsString({ message: ValidationMessages.nameMustBeText })
+  @MaxLength(150, { message: ValidationMessages.userNameMaxLength })
   public readonly name: string;
 
   @IsEmail({}, { message: ValidationMessages.emailInvalid })

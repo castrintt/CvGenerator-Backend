@@ -7,7 +7,7 @@ import { DeleteUserHandler } from 'src/application/commands/handlers/user/delete
 import { SendUserResetPasswordEmailHandler } from 'src/application/commands/handlers/user/sendUserResetPasswordEmail.handler';
 import { UpdateUserHandler } from 'src/application/commands/handlers/user/updateUser.handler';
 import { UpdateUserPasswordHandler } from 'src/application/commands/handlers/user/updateUserPassword.handler';
-import { GetUserByIdHandler } from 'src/application/queries/handlers/user/getUserById.handler';
+import { GetCurrentUserHandler } from 'src/application/queries/handlers/user/getCurrentUser.handler';
 import { UserEntity } from 'src/domain/entities/user.entity';
 import { UserRepository } from 'src/infrastructure/repository/user.repository';
 import { UserRepositorySymbol } from '../symbols/symbols';
@@ -26,7 +26,7 @@ import { EmailAlreadyExistsGuard } from 'src/shared/guard/email-already-exists.g
     SendUserResetPasswordEmailHandler,
 
     //queries
-    GetUserByIdHandler,
+    GetCurrentUserHandler,
 
     //repository
     {

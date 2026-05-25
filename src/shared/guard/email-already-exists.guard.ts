@@ -15,6 +15,11 @@ import {
 } from 'src/shared/decorator/email-unique.decorator';
 import { normalizeEmail } from 'src/shared/utils/normalize-email';
 
+type AuthenticatedRequest = {
+  body?: { email?: string };
+  user?: { userId: string };
+};
+
 @Injectable()
 export class EmailAlreadyExistsGuard implements CanActivate {
   constructor(
@@ -32,7 +37,7 @@ export class EmailAlreadyExistsGuard implements CanActivate {
 
     const request = context
       .switchToHttp()
-      .getRequest<{ body?: { email?: string }; query?: { id?: string } }>();
+      .getRequest<AuthenticatedRequest>();
     const rawEmail = request.body?.email;
     if (typeof rawEmail !== 'string' || !rawEmail.trim()) return true;
 
@@ -47,7 +52,7 @@ export class EmailAlreadyExistsGuard implements CanActivate {
     }
     if (mode === 'create') return true;
 
-    const userId = request.query?.id;
+    const userId = request.user?.userId;
     if (existing && userId !== undefined && existing.id !== userId) {
       throw new BadRequestException(
         ApiErrorMessages.registration.duplicateEmailOnUpdate,
