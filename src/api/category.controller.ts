@@ -69,6 +69,7 @@ export class CategoryController {
   }
 
   @Get('findAll')
+  @SkipThrottle({ short: true, medium: true, long: true })
   async findAllCategories(
     @Req() req: AuthenticatedRequest,
   ): Promise<FindAllCategoriesResponse[]> {
