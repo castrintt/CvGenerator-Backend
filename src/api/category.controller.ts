@@ -8,6 +8,7 @@ import {
   Query,
   Req,
 } from '@nestjs/common';
+import { SkipThrottle } from '@nestjs/throttler';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import type { Request } from 'express';
 import {
@@ -44,6 +45,7 @@ export class CategoryController {
   }
 
   @Put('update')
+  @SkipThrottle({ short: true, medium: true, long: true })
   async updateCategory(
     @Req() req: AuthenticatedRequest,
     @Body() request: UpdateCategoryRequest,
