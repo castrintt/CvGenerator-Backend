@@ -5,7 +5,7 @@ import {
   getAccessTokenSetCookieOptions,
   getAuthCookieSecurityOptions,
   getRefreshTokenSetCookieOptions,
-} from './auth-cookies';
+} from 'src/shared/constants/auth-cookies';
 
 describe('getAuthCookieSecurityOptions', () => {
   const originalNodeEnv = process.env.NODE_ENV;

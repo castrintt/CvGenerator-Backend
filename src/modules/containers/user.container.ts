@@ -12,12 +12,14 @@ import { UserEntity } from 'src/domain/entities/user.entity';
 import { UserRepository } from 'src/infrastructure/repository/user.repository';
 import { UserRepositorySymbol } from '../symbols/symbols';
 import { EmailAlreadyExistsGuard } from 'src/shared/guard/email-already-exists.guard';
+import { SetAuthCookiesInterceptor } from 'src/shared/interceptor/set-auth-cookies.interceptor';
 
 @Module({
   imports: [CqrsModule, TypeOrmModule.forFeature([UserEntity])],
   controllers: [UserController],
   providers: [
     EmailAlreadyExistsGuard,
+    SetAuthCookiesInterceptor,
     //commands
     CreateUserHandler,
     DeleteUserHandler,

@@ -6,10 +6,10 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { SignInAuthResult } from 'src/application/dto/response/user/signInAuth.response';
-import { UserMapper } from 'src/application/mapper/user.mapper';
 import { type IUserRepository } from 'src/domain/interfaces/IUserRepository';
 import { UserRepositorySymbol } from 'src/modules/symbols/symbols';
 import { ApiErrorMessages } from 'src/shared/constants/api-error-messages';
+import { issueAuthTokensForUser } from 'src/shared/utils/issue-auth-tokens-for-user';
 import { normalizeEmail } from 'src/shared/utils/normalize-email';
 import { SignInAuthCommand } from '../../auth.command';
 
@@ -34,21 +34,6 @@ export class SignInAuthHandler implements ICommandHandler<SignInAuthCommand> {
       throw new UnauthorizedException(ApiErrorMessages.auth.invalidCredentials);
     }
 
-    const payload = { sub: userEntity.id, email: userEntity.email, type: 'access' as const };
-    const refreshPayload = { sub: userEntity.id, email: userEntity.email, type: 'refresh' as const };
-
-    const accessToken = this._jwt_service.sign(payload);
-    const refreshToken = this._jwt_service.sign(refreshPayload, { expiresIn: '7d' });
-
-    const user = UserMapper.fromDomainToResponse(userEntity);
-    return new SignInAuthResult(
-      user.id,
-      user.name,
-      user.email,
-      user.createdAt,
-      user.updatedAt,
-      accessToken,
-      refreshToken,
-    );
+    return issueAuthTokensForUser(userEntity, this._jwt_service);
   }
 }

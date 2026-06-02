@@ -8,6 +8,7 @@ import {
   Put,
   Req,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Throttle } from '@nestjs/throttler';
@@ -28,6 +29,7 @@ import { USER_CHANGE_PASSWORD_THROTTLE } from 'src/shared/constants/rate-limit-c
 import { EmailUnique } from 'src/shared/decorator/email-unique.decorator';
 import { Public } from 'src/shared/decorator/public.decorator';
 import { EmailAlreadyExistsGuard } from 'src/shared/guard/email-already-exists.guard';
+import { SetAuthCookiesInterceptor } from 'src/shared/interceptor/set-auth-cookies.interceptor';
 
 type AuthenticatedRequest = Request & { user: { userId: string; email: string } };
 
@@ -69,30 +71,36 @@ export class UserController {
   @Put('update')
   @EmailUnique('update')
   @UseGuards(EmailAlreadyExistsGuard)
+  @UseInterceptors(SetAuthCookiesInterceptor)
   async updateUser(
     @Req() req: AuthenticatedRequest,
     @Body() request: UpdateUserRequest,
-  ): Promise<void> {
+  ): Promise<GetByIdResponse> {
     const command = new UpdateUserCommand(
       req.user.userId,
       request.name,
       request.email,
     );
-    return this._command_bus.execute<UpdateUserCommand>(command);
+    return this._command_bus.execute<UpdateUserCommand, GetByIdResponse>(
+      command,
+    );
   }
 
   @Put('update_password')
   @Throttle(USER_CHANGE_PASSWORD_THROTTLE)
+  @UseInterceptors(SetAuthCookiesInterceptor)
   async updateUserPassword(
     @Req() req: AuthenticatedRequest,
     @Body() request: UpdateUserPasswordRequest,
-  ): Promise<void> {
+  ): Promise<GetByIdResponse> {
     const command = new UpdateUserPasswordCommand(
       req.user.userId,
       request.currentPassword,
       request.newPassword,
     );
-    return this._command_bus.execute<UpdateUserPasswordCommand>(command);
+    return this._command_bus.execute<UpdateUserPasswordCommand, GetByIdResponse>(
+      command,
+    );
   }
 
   @Post('send_email_reset_password')

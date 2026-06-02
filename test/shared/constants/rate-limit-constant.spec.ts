@@ -1,7 +1,7 @@
 import {
   AUTH_REFRESH_THROTTLE,
   AUTH_SIGN_IN_THROTTLE,
-} from './rate-limit-constant';
+} from 'src/shared/constants/rate-limit-constant';
 
 const THROTTLER_NAMES = ['short', 'medium', 'long'] as const;
 

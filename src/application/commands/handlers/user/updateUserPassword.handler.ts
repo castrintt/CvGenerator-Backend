@@ -6,10 +6,13 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { SignInAuthResult } from 'src/application/dto/response/user/signInAuth.response';
 import { type IUserRepository } from 'src/domain/interfaces/IUserRepository';
 import { UserRepositorySymbol } from 'src/modules/symbols/symbols';
 import { ApiErrorMessages } from 'src/shared/constants/api-error-messages';
+import { issueAuthTokensForUser } from 'src/shared/utils/issue-auth-tokens-for-user';
 import { PasswordToHash } from 'src/shared/utils/passwordToHash';
 import { UpdateUserPasswordCommand } from '../../user.command';
 
@@ -21,9 +24,10 @@ export class UpdateUserPasswordHandler
   constructor(
     @Inject(UserRepositorySymbol)
     private readonly _user_repository: IUserRepository,
+    private readonly _jwt_service: JwtService,
   ) {}
 
-  async execute(command: UpdateUserPasswordCommand): Promise<boolean> {
+  async execute(command: UpdateUserPasswordCommand): Promise<SignInAuthResult> {
     const user = await this._user_repository.findUserEntityById(
       command.authenticatedUserId,
     );
@@ -48,9 +52,18 @@ export class UpdateUserPasswordHandler
     }
 
     const hashedPassword = await PasswordToHash.hash(command.newPassword);
-    return this._user_repository.updatePassword(
+    await this._user_repository.updatePassword(
       command.authenticatedUserId,
       hashedPassword,
     );
+
+    const updatedUser = await this._user_repository.findUserEntityById(
+      command.authenticatedUserId,
+    );
+    if (!updatedUser) {
+      throw new NotFoundException();
+    }
+
+    return issueAuthTokensForUser(updatedUser, this._jwt_service);
   }
 }

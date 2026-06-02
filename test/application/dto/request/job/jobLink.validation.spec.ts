@@ -1,8 +1,8 @@
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
+import { CreateJobRequest } from 'src/application/dto/request/job/create.request';
+import { UpdateJobRequest } from 'src/application/dto/request/job/update.request';
 import { ValidationMessages } from 'src/shared/constants/validation-messages';
-import { CreateJobRequest } from './create.request';
-import { UpdateJobRequest } from './update.request';
 
 const categoryId = '550e8400-e29b-41d4-a716-446655440000';
 const jobId = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';

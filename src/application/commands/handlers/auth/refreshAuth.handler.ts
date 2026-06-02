@@ -2,10 +2,10 @@ import { Inject, UnauthorizedException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { JwtService } from '@nestjs/jwt';
 import { SignInAuthResult } from 'src/application/dto/response/user/signInAuth.response';
-import { UserMapper } from 'src/application/mapper/user.mapper';
 import { type IUserRepository } from 'src/domain/interfaces/IUserRepository';
 import { UserRepositorySymbol } from 'src/modules/symbols/symbols';
 import { ApiErrorMessages } from 'src/shared/constants/api-error-messages';
+import { issueAuthTokensForUser } from 'src/shared/utils/issue-auth-tokens-for-user';
 import { RefreshAuthCommand } from '../../auth.command';
 
 type JwtRefreshPayload = { sub: string; email: string; type: string };
@@ -47,23 +47,6 @@ export class RefreshAuthHandler implements ICommandHandler<RefreshAuthCommand> {
       throw new UnauthorizedException(ApiErrorMessages.auth.sessionInvalid);
     }
 
-    const nextPayload = { sub: userEntity.id, email: userEntity.email, type: 'access' as const };
-    const nextRefreshPayload = { sub: userEntity.id, email: userEntity.email, type: 'refresh' as const };
-
-    const accessToken = this._jwt_service.sign(nextPayload);
-    const refreshToken = this._jwt_service.sign(nextRefreshPayload, {
-      expiresIn: '7d',
-    });
-
-    const user = UserMapper.fromDomainToResponse(userEntity);
-    return new SignInAuthResult(
-      user.id,
-      user.name,
-      user.email,
-      user.createdAt,
-      user.updatedAt,
-      accessToken,
-      refreshToken,
-    );
+    return issueAuthTokensForUser(userEntity, this._jwt_service);
   }
 }
